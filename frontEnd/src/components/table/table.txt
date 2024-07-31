@@ -1,0 +1,429 @@
+import React from "react";
+import { useState } from "react";
+import {
+  useTable,
+  usePagination,
+  useFilters,
+  useBlockLayout,
+  useResizeColumns,
+} from "react-table";
+import "./table.css";
+
+function Table({ columns, data }) {
+  const [pageSize, setPageSize] = useState(10);
+  const pageSizes = [10, 20, 30, 40, 50];
+
+  const handleChange = (increment) => {
+    const currentIndex = pageSizes.indexOf(pageSize);
+    const newIndex = currentIndex + increment;
+
+    if (newIndex >= 0 && newIndex < pageSizes.length) {
+      setPageSize(pageSizes[newIndex]);
+    }
+  };
+
+  const defaultColumn = React.useMemo(
+    () => ({
+      minWidth: 30,
+      width: 150,
+      maxWidth: 300,
+    }),
+    []
+  );
+
+  // const initialState = { hiddenColumns: ["Answer"], pageSize: pageSize };
+  const {
+    getTableProps,
+    getTableBodyProps,
+    headerGroups,
+    prepareRow,
+    page,
+    canPreviousPage,
+    canNextPage,
+    pageOptions,
+    pageCount,
+    gotoPage,
+    nextPage,
+    previousPage,
+    setPageSize: setPageSiz,
+    state: { pageIndex },
+  } = useTable(
+    {
+      columns,
+      data,
+      defaultColumn,
+      initialState: { pageIndex: 0, pageSize },
+      manualPagination: false, // Set to true if you handle pagination on the server side
+    },
+    useBlockLayout,
+    useResizeColumns,
+    useFilters,
+    usePagination
+  );
+
+  React.useEffect(() => {
+    setPageSiz(pageSize);
+  }, [pageSize, setPageSiz]);
+
+  return (
+    <>
+      <div className="table-container">
+        <div {...getTableProps()} className="table">
+          <div>
+            {headerGroups.map((headerGroup) => (
+              <div {...headerGroup.getHeaderGroupProps()} className="tr">
+                {headerGroup.headers.map((column) => (
+                  <div {...column.getHeaderProps()} className="th">
+                    {column.render("Header")}
+                    <div
+                      {...column.getResizerProps()}
+                      className={`resizer ${
+                        column.isResizing ? "isResizing" : ""
+                      }`}
+                    />
+                  </div>
+                ))}
+              </div>
+            ))}
+          </div>
+
+          <div {...getTableBodyProps()}>
+            {page.map((row) => {
+              prepareRow(row);
+              return (
+                <div {...row.getRowProps()} className="tr">
+                  {row.cells.map((cell) => {
+                    return (
+                      <div {...cell.getCellProps()} className="td">
+                        {cell.render("Cell")}
+                      </div>
+                    );
+                  })}
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      </div>
+
+      <div className="pagination">
+        <div className="pages">
+          <i
+            className="bx bxs-left-arrow"
+            onClick={() => gotoPage(0)}
+            disabled={!canPreviousPage}
+          ></i>
+          <i
+            className="bx bx-chevron-left"
+            onClick={() => previousPage()}
+            disabled={!canPreviousPage}
+          ></i>
+          <span>
+            Page
+            <strong>
+              {pageIndex + 1} / {pageOptions.length}
+            </strong>
+          </span>
+          <i
+            className="bx bx-chevron-right"
+            onClick={() => nextPage()}
+            disabled={!canNextPage}
+          ></i>
+          <i
+            className="bx bxs-right-arrow"
+            onClick={() => gotoPage(pageCount - 1)}
+            disabled={!canNextPage}
+          ></i>
+        </div>
+
+        <div className="pagesize">
+          <i
+            className="bx bx-chevron-left"
+            onClick={() => handleChange(-1)}
+            disabled={pageSize === pageSizes[0]}
+          ></i>
+          <span>{` ${pageSize} `}</span>
+          <i
+            className="bx bx-chevron-right"
+            onClick={() => handleChange(1)}
+            disabled={pageSize === pageSizes[pageSizes.length - 1]}
+          ></i>
+        </div>
+      </div>
+    </>
+  );
+}
+
+function App() {
+  const columns = React.useMemo(
+    () => [
+      {
+        Header: "User ID",
+        accessor: "userId",
+        width: 150, // Initial width
+        minWidth: 100, // Minimum width
+        maxWidth: 300, // Maximum width
+        resizable: true, // Enable resizing
+      },
+      {
+        Header: "Date / Time",
+        accessor: "dateTime",
+        width: 200,
+        minWidth: 150,
+        maxWidth: 400,
+        resizable: true,
+      },
+      {
+        Header: "Question",
+        accessor: "questionAnswer",
+        width: 300,
+        minWidth: 200,
+        maxWidth: 600,
+        resizable: true,
+      },
+      {
+        Header: "Answer",
+        accessor: "questionAnswers",
+        width: 300,
+        minWidth: 200,
+        maxWidth: 600,
+        resizable: true,
+      },
+      {
+        Header: "Protocol Name",
+        accessor: "protocolName",
+        width: 200,
+        minWidth: 150,
+        maxWidth: 400,
+        resizable: true,
+      },
+      {
+        Header: "Protocol",
+        accessor: "protocolStatus",
+        width: 100,
+        minWidth: 100,
+        maxWidth: 300,
+        resizable: true,
+        Cell: ({ value }) => (
+          <span style={{ color: value === "Good" ? "green" : "red" }}>
+            {value}
+          </span>
+        ),
+      },
+    ],
+    []
+  );
+
+  const data = React.useMemo(
+    () => [
+      {
+        userId: "12345678901234",
+        dateTime: "Jan 20, 2040 9:41 AM",
+        questionAnswer:
+          "What is this step is lorem fhsdfhsdbdfuyubgbfgjjbeugbebgbbggjwebugbegbuubgweguuwerbgkjbfgeru   bguwerguyebrg eregguerbgehug weregihheiueggwfbgjwegeiug eeweergiuwegkwehgkjeguwegweug ...",
+        questionAnswers: "This step is...",
+        protocolName: "Protocol name",
+        protocolStatus: "Bad",
+      },
+      {
+        userId: "12345678901234",
+        dateTime: "Jan 20, 2040 9:41 AM",
+        questionAnswer: "What is this step is...",
+        questionAnswers: "This step is...",
+        protocolName: "Protocol name",
+        protocolStatus: "Good",
+      },
+      {
+        userId: "12345678901234",
+        dateTime: "Jan 20, 2040 9:41 AM",
+        questionAnswer: "What is this step is...",
+        questionAnswers: "This step is...",
+        protocolName: "Protocol name",
+        protocolStatus: "Good",
+      },
+      {
+        userId: "12345678901234",
+        dateTime: "Jan 20, 2040 9:41 AM",
+        questionAnswer: "What is this step is...",
+        questionAnswers: "This step is...",
+        protocolName: "Protocol name",
+        protocolStatus: "Good",
+      },
+      {
+        userId: "12345678901234",
+        dateTime: "Jan 20, 2040 9:41 AM",
+        questionAnswer: "What is this step is...",
+        questionAnswers: "This step is...",
+        protocolName: "Protocol name",
+        protocolStatus: "Good",
+      },
+      {
+        userId: "12345678901234",
+        dateTime: "Jan 20, 2040 9:41 AM",
+        questionAnswer: "What is this step is...",
+        questionAnswers: "This step is...",
+        protocolName: "Protocol name",
+        protocolStatus: "Good",
+      },
+      {
+        userId: "12345678901234",
+        dateTime: "Jan 20, 2040 9:41 AM",
+        questionAnswer: "What is this step is...",
+        questionAnswers: "This step is...",
+        protocolName: "Protocol name",
+        protocolStatus: "Good",
+      },
+      {
+        userId: "12345678901234",
+        dateTime: "Jan 20, 2040 9:41 AM",
+        questionAnswer: "What is this step is...",
+        questionAnswers: "This step is...",
+        protocolName: "Protocol name",
+        protocolStatus: "Good",
+      },
+      {
+        userId: "12345678901234",
+        dateTime: "Jan 20, 2040 9:41 AM",
+        questionAnswer: "What is this step is...",
+        questionAnswers: "This step is...",
+        protocolName: "Protocol name",
+        protocolStatus: "Good",
+      },
+      {
+        userId: "12345678901234",
+        dateTime: "Jan 20, 2040 9:41 AM",
+        questionAnswer: "What is this step is...",
+        questionAnswers: "This step is...",
+        protocolName: "Protocol name",
+        protocolStatus: "Good",
+      },
+      {
+        userId: "12345678901234",
+        dateTime: "Jan 20, 2040 9:41 AM",
+        questionAnswer: "What is this step is...",
+        questionAnswers: "This step is...",
+        protocolName: "Protocol name",
+        protocolStatus: "Good",
+      },
+      {
+        userId: "12345678901234",
+        dateTime: "Jan 20, 2040 9:41 AM",
+        questionAnswer: "What is this step is...",
+        questionAnswers: "This step is...",
+        protocolName: "Protocol name",
+        protocolStatus: "Good",
+      },
+      {
+        userId: "12345678901234",
+        dateTime: "Jan 20, 2040 9:41 AM",
+        questionAnswer: "What is this step is...",
+        questionAnswers: "This step is...",
+        protocolName: "Protocol name",
+        protocolStatus: "Good",
+      },
+      {
+        userId: "12345678901234",
+        dateTime: "Jan 20, 2040 9:41 AM",
+        questionAnswer: "What is this step is...",
+        questionAnswers: "This step is...",
+        protocolName: "Protocol name",
+        protocolStatus: "Good",
+      },
+      {
+        userId: "12345678901234",
+        dateTime: "Jan 20, 2040 9:41 AM",
+        questionAnswer: "What is this step is...",
+        questionAnswers: "This step is...",
+        protocolName: "Protocol name",
+        protocolStatus: "Good",
+      },
+      {
+        userId: "12345678901234",
+        dateTime: "Jan 20, 2040 9:41 AM",
+        questionAnswer: "What is this step is...",
+        questionAnswers: "This step is...",
+        protocolName: "Protocol name",
+        protocolStatus: "Good",
+      },
+      {
+        userId: "12345678901234",
+        dateTime: "Jan 20, 2040 9:41 AM",
+        questionAnswer: "What is this step is...",
+        questionAnswers: "This step is...",
+        protocolName: "Protocol name",
+        protocolStatus: "Good",
+      },
+      {
+        userId: "12345678901234",
+        dateTime: "Jan 20, 2040 9:41 AM",
+        questionAnswer: "What is this step is...",
+        questionAnswers: "This step is...",
+        protocolName: "Protocol name",
+        protocolStatus: "Good",
+      },
+      {
+        userId: "12345678901234",
+        dateTime: "Jan 20, 2040 9:41 AM",
+        questionAnswer: "What is this step is...",
+        questionAnswers: "This step is...",
+        protocolName: "Protocol name",
+        protocolStatus: "Good",
+      },
+      {
+        userId: "12345678901234",
+        dateTime: "Jan 20, 2040 9:41 AM",
+        questionAnswer: "What is this step is...",
+        questionAnswers: "This step is...",
+        protocolName: "Protocol name",
+        protocolStatus: "Good",
+      },
+      {
+        userId: "12345678901234",
+        dateTime: "Jan 20, 2040 9:41 AM",
+        questionAnswer: "What is this step is...",
+        questionAnswers: "This step is...",
+        protocolName: "Protocol name",
+        protocolStatus: "Good",
+      },
+      {
+        userId: "12345678901234",
+        dateTime: "Jan 20, 2040 9:41 AM",
+        questionAnswer: "What is this step is...",
+        questionAnswers: "This step is...",
+        protocolName: "Protocol name",
+        protocolStatus: "Good",
+      },
+      {
+        userId: "12345678901234",
+        dateTime: "Jan 20, 2040 9:41 AM",
+        questionAnswer: "What is this step is...",
+        questionAnswers: "This step is...",
+        protocolName: "Protocol name",
+        protocolStatus: "Good",
+      },
+      {
+        userId: "12345678901234",
+        dateTime: "Jan 20, 2040 9:41 AM",
+        questionAnswer: "What is this step is...",
+        questionAnswers: "This step is...",
+        protocolName: "Protocol name",
+        protocolStatus: "Good",
+      },
+      {
+        userId: "12345678901234",
+        dateTime: "Jan 20, 2040 9:41 AM",
+        questionAnswer: "What is this step is...",
+        questionAnswers: "This step is...",
+        protocolName: "Protocol name",
+        protocolStatus: "Good",
+      },
+
+      // Add more data as needed
+    ],
+    []
+  );
+
+  return <Table columns={columns} data={data} />;
+}
+
+export default App;

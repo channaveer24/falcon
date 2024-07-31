@@ -1,0 +1,69 @@
+import React from 'react';
+import { Bar } from 'react-chartjs-2';
+import 'chart.js/auto';
+import  './chart.css';
+
+
+
+const data = {
+  labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+  datasets: [
+    {
+      label: 'API Calls',
+      data: [12, 19, 3, 5, 2, 3, 7, 8, 12, 15, 9, 6],
+      backgroundColor: 'rgba(255, 159, 64, 0.6)',
+    },
+  ],
+};
+
+const options = {
+  responsive: true,
+  maintainAspectRatio: true,
+  scales: {
+    x: {
+      grid: {
+        display: false,
+      },
+    },
+    y: {
+      grid: {
+        display: false,
+      },
+    },
+  },
+  plugins: {
+    legend: {
+      display: false,
+    },
+  },
+  animation: {
+    duration: 0, // General animation time
+  },
+  elements: {
+    line: {
+      tension: 0.4, // Disable bezier curves
+    },
+  },
+};
+
+const Chart = () => {
+  return (
+    <div className="chart-container">
+      <Bar data={data} options={options} />
+    </div>
+  );
+};
+
+export default Chart;
+
+
+
+.chart-container {
+  width: auto;
+  height: 400px; 
+  background-color: #3b2d27;
+  padding: 10px; 
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  margin-bottom: 20px;
+}

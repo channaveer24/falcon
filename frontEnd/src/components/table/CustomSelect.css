@@ -1,0 +1,71 @@
+* {
+    font-family: plus jakarta sans;
+  }
+
+.custom-select-container {
+    position: relative;
+    display: inline-block;
+    width: 200px; /* Adjust as needed */
+  }
+  
+  .custom-select-header {
+    background: none;
+    gap: 10px;
+    border-radius: 45px;
+    border: 1px solid #dedcdc;
+    /* opacity: 0px; */
+    background-color: #fffffd;
+    font-weight: 400;
+    padding: 10px;
+    font-size: 14px;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    max-height: 25px;
+    height: 22px;
+  }
+  
+  .select-arrow {
+    width: 15px;
+    height: 10px; 
+  }
+  
+  .custom-select-list {
+    width: 194px;
+    position: absolute;
+    top: 100%;
+    /* left: 18px; */
+    right: 0;
+    border: 1px solid #ccc;
+    background: white;
+    z-index: 10;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    border-radius: 10px;
+    box-shadow: 0px 5px 5px 0px #ddd;
+    margin-top: 10px;
+    text-align: center;
+  }
+  
+  .custom-select-option {
+    padding: 5px;
+    font-size: 14px;
+    cursor: pointer;
+    border-bottom: 1px solid #ccc;
+    /* border-radius: 0 0 0px 8px; */
+  }
+  
+  .custom-select-option:hover {
+    background-color: #dddcdc;
+    border-radius: 3px;
+  }
+
+  .custom-select-option.all-protocols {
+    background: linear-gradient(90deg, #463C30 0%, #AC9376 100%);
+    color: white;
+    border-radius: 3px;
+  }
+  

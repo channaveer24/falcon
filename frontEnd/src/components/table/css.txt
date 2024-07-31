@@ -1,0 +1,124 @@
+.table-container {
+  width: 100%;
+  max-width: 1320px; /*Adjust as needed*/
+  height: 500px; /* Adjust as needed */
+  overflow: auto;
+  background-color: #f8f8f8;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  padding: 10px;
+  box-sizing: border-box;
+}
+
+/* Hide the scrollbar but keep the scroll functionality */
+.table-container::-webkit-scrollbar {
+  width: 0px;
+  height: 0px;
+}
+
+.table-container {
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
+}
+
+.table-container::-webkit-scrollbar {
+  display: none; /* Safari and Chrome */
+}
+
+.table {
+  overflow-x: auto;
+  display: inline-block;
+  table-layout: fixed;
+  background-color: #f8f8f8;
+  border-radius: 15px;
+  padding: 10px;
+}
+
+.tr {
+  display: flex;
+  transition: background-color 0.3s ease; /* Smooth transition for hover effect */
+  border-radius: 10px; /* Apply border-radius to the row */
+  overflow: hidden; /* Ensure the border-radius is visible */
+}
+
+.th,
+.td {
+  padding: 10px;
+  margin: 5px;
+  box-sizing: border-box;
+  padding: 8px;
+  border-collapse: "separate";
+  border: none;
+  border-radius: 10px;
+  margin-top: 14px;
+  overflow-wrap: break-word;
+  position: relative;
+  text-align: center;
+  background-color: white; /* Keep the cells white to ensure the design remains */
+  transition: background-color 0.3s ease; /* Smooth transition for hover effect */
+}
+
+.th {
+  background-color: #fff;
+  border-radius: 15px;
+  font-weight: bold;
+}
+
+.tr:hover .td {
+  background-color: #959697; /* Highlight color for the entire row on hover */
+  cursor: pointer;
+}
+
+.resizer {
+  position: absolute;
+  top: 0;
+  right: -5px; /* Adjust position to fit your design */
+  width: 10px;
+  height: 100%;
+  cursor: col-resize;
+  background: transparent;
+  touch-action: none;
+
+  &.isResizing {
+    background: red;
+  }
+}
+
+.resizer:hover {
+  background-color: rgba(0, 0, 0, 0.1);
+}
+
+.tr:nth-child(even) {
+  background-color: #f8f8f8;
+}
+
+.th:last-child,
+.td:last-child {
+  border-right: 0;
+}
+
+.pagination {
+  margin-top: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.pages {
+  background-color: #f0f0f0;
+  border-radius: 15px;
+  padding: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 10px;
+}
+
+.pagesize {
+  background-color: #f0f0f0;
+  border-radius: 15px;
+  padding: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}

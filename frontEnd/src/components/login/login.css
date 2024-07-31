@@ -1,0 +1,65 @@
+*{
+  font-family: plus jakarta sans;
+}
+
+.App {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: #DDDEDD;
+    border-radius: 2px;
+  }
+  
+  .login-container {
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    width: 300px;
+  }
+  
+  .login-form {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+  }
+  
+  .login-form h2 {
+    text-align: start;
+    margin-bottom: 20px;
+  }
+  
+  .form-group {
+    margin-bottom: 15px;
+  }
+  
+  .form-group label {
+    display: block;
+    margin-bottom: 5px;
+    color: #9A9A9A;
+    font-weight: 500;
+  }
+  
+  .form-group input {
+    width: 100%;
+    padding: 10px 0px;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    background-color: #F5F5F5;
+    text-align: start;
+  }
+  
+  .submit {
+    padding: 10px 0px;
+    background-color: #000000;
+    color: #FFFFFF;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    cursor: pointer;
+  }
+  
+  .submit:hover {
+    background-color: #333;
+  }
+  
