@@ -447,7 +447,7 @@ function App() {
     const fetchData = async () => {
       try {
         const result = await axios.get(
-          "https://falconreality.onrender.com/api/getChatdata"
+          "/api/getChatdata"
         );
         // const result = await axios.get(
         //   "http://localhost:8800/api/getChatData"
